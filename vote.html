@@ -3,6 +3,8 @@
   <head>
     <script src="menu.js"></script>
 
+    <script src="app.js"></script>
+
     <link rel="import" href="menu.html" onload="handleLoad(event)" onerror="handleError(event)">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -28,27 +30,26 @@
             <div class="form-group">
               <label for="lawProject">Projeto de Lei</label>
               <select class="form-control" id="lawProject">
-                <option>99 Construir mais rodovias</option>
-                <option>100 Legalização do aborto</option>
-                <option>101 Legalização das drogas</option>
+                <option value="99">99 Construir mais rodovias</option>
+                <option value="100">100 Legalização do aborto</option>
+                <option value="101">101 Legalização das drogas</option>
               </select>
             </div>
             <div class="form-group">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="vote" id="yes" value="option1">
+                <input class="form-check-input" type="radio" name="vote" id="yes" value="true">
                 <label class="form-check-label" for="yes">Sou a favor</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="vote" id="no" value="option2">
+                <input class="form-check-input" type="radio" name="vote" id="no" value="false">
                 <label class="form-check-label" for="no">Sou contra</label>
               </div>
             </div>
             <div class="form-group">
-              <label for="publicKey">Comentário</label>
-              <textarea class="form-control" id="publicKey" rows="10">
-              </textarea>
+              <label for="comment">Comentário</label>
+              <textarea class="form-control" id="comment" rows="10"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Enviar voto</button>
+            <button type="button" class="btn btn-primary" onclick="App.sendVote()">Enviar voto</button>
           </form>
         </div>
       </div>

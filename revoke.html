@@ -3,6 +3,8 @@
   <head>
     <script src="menu.js"></script>
 
+    <script src="app.js"></script>
+
     <link rel="import" href="menu.html" onload="handleLoad(event)" onerror="handleError(event)">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -32,7 +34,7 @@
                 <option>d8976...(Windows)</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-primary">Revogar chave</button>
+            <button type="button" class="btn btn-primary" onclick="App.revoke()">Revogar chave</button>
           </form>
         </div>
       </div>

@@ -1,6 +1,13 @@
 <!doctype html>
 <html>
   <script src="menu.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    window.onload = function() {
+      document.querySelector("#publicKey").value = App.publicKey()
+    };
+  </script>
 
   <head>
     <link rel="import" href="menu.html" onload="handleLoad(event)" onerror="handleError(event)">
@@ -37,10 +44,10 @@
             </div>
             <div class="form-group">
               <label for="publicKey">Chave Pública</label>
-              <textarea class="form-control" readonly id="publicKey" rows="10">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCp/SNDIPoEQTly7FfrtNTg6U3od/9OBAjn+U9q7gSylGYEtTyIVH00CBXyCR4CIZDXk4WXdTc+/Fp4UpZ11G7IxFCcrW3gcZcFQ5fUrPJibVUitd6Lj+x+aWz5GxHiEv03MkLbPkcT6s2RqiPVKFy694wgcOrsCi4NoD6wB8PJDQTjd7p5lsQrYu9CGKjCQnR0UKn53bL8A22bKyegNkxu6wEtURh9QozvbIqGdahSNg7Knd7Faq4dnsNbUoP3Z+ei1AenZ9Tfa5+Gdj/54BtfouTWJPCLWpLh36kb0dMKThZeWbQ03YQ8u/qWKFBc2fiFIpmlHcEziGfP8A5i4EfD akelmanson@MacBook-Air-de-Andre.local
+              <textarea class="form-control" readonly id="publicKey" rows="10">
               </textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Autorizar Chave</button>
+            <button type="button" class="btn btn-primary" onclick="App.authorize()">Autorizar Chave</button>
           </form>
         </div>
       </div>
