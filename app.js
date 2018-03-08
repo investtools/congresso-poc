@@ -1,6 +1,4 @@
 function App() {
-  
-  localStorage.setItem("publicKey", "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCp/SNDIPoEQTly7FfrtNTg6U3od/9OBAjn+U9q7gSylGYEtTyIVH00CBXyCR4CIZDXk4WXdTc+/Fp4UpZ11G7IxFCcrW3gcZcFQ5fUrPJibVUitd6Lj+x+aWz5GxHiEv03MkLbPkcT6s2RqiPVKFy694wgcOrsCi4NoD6wB8PJDQTjd7p5lsQrYu9CGKjCQnR0UKn53bL8A22bKyegNkxu6wEtURh9QozvbIqGdahSNg7Knd7Faq4dnsNbUoP3Z+ei1AenZ9Tfa5+Gdj/54BtfouTWJPCLWpLh36kb0dMKThZeWbQ03YQ8u/qWKFBc2fiFIpmlHcEziGfP8A5i4EfD akelmanson@MacBook-Air-de-Andre.local");  
   this.brazilianCitizen = function() {
     return window.document.querySelector("#brazilianCitizen").checked
   }
@@ -8,6 +6,10 @@ function App() {
     return window.document.querySelector("#cpf").value
   }
   this.publicKey = function() {
+    if (!localStorage.getItem("publicKey")) {
+      localStorage.setItem("publicKey", this.generateEthKey().address);  
+    }
+
     return localStorage.getItem("publicKey")
   }
 
@@ -24,6 +26,25 @@ function App() {
       return true
     else
       return false
+  }
+
+  this.generateEthKey = function() {
+    var privateKey = "10f2"
+    var password = "123"
+    var dk = keythereum.create()
+
+    var options = {
+      kdf: "pbkdf2",
+      cipher: "aes-128-ctr",
+      kdfparams: {
+        c: 262144,
+        dklen: 32,
+        prf: "hmac-sha256"
+      }
+    };
+    
+    var keyObject = keythereum.dump(password, dk.privateKey, dk.salt, dk.iv, options)
+    return keyObject
   }
   
   this.authorize = function() {
