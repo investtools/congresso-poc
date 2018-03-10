@@ -4,7 +4,10 @@
 
   <script>
     window.onload = function() {
-      document.querySelector("#publicKey").value = App.publicKey()
+      App.getKeyStore(function(ks){
+        console.log(ks)
+        document.querySelector("#publicKey").value = ks.addresses[0]
+      })
     };
   </script>
 
@@ -52,7 +55,8 @@
       </div>
     </div>
   </body>
-  <script src="node_modules/keythereum/dist/keythereum.js"></script>
+  <script src="node_modules/eth-lightwallet/dist/lightwallet.js"></script>
+  <script src="node_modules/store/dist/store.legacy.min.js"></script>
   <script src="app.js"></script>
   
 </html>

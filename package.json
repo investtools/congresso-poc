@@ -11,10 +11,12 @@
   "dependencies": {
     "bootstrap": "^4.0.0",
     "bower": "^1.8.2",
+    "eth-lightwallet": "^3.0.1",
     "install": "^0.10.4",
     "jquery": "^3.3.1",
     "keythereum": "^1.0.2",
     "npm": "^5.7.1",
+    "store": "^2.0.12",
     "uninstall": "0.0.0",
     "web3": "^0.19.1"
   }
