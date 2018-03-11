@@ -2,9 +2,16 @@
 <html>
   <head>
     <script src="menu.js"></script>
-    <link rel="import" href="menu.html" onload="handleLoad(event)" onerror="handleError(event)">
 
+    <script>
+      window.onload = function() {
+        App.buildLawProjects()
+      };
+    </script>
+
+    <link rel="import" href="menu.html" onload="handleLoad(event)" onerror="handleError(event)">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <style>
@@ -26,11 +33,12 @@
           <form>
             <div class="form-group">
               <label for="lawProject">Projeto de Lei</label>
+              
               <select class="form-control" id="lawProject">
-                <option value="99">99 Construir mais rodovias</option>
-                <option value="100">100 Legalização do aborto</option>
-                <option value="101">101 Legalização das drogas</option>
+                
               </select>
+
+
             </div>
             <div class="form-group">
               <div class="form-check form-check-inline">
@@ -51,6 +59,9 @@
         </div>
       </div>
     </div>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/toastr/build/toastr.min.js"></script>
+    <script src="node_modules/axios/dist/axios.min.js"></script>
     <script src="node_modules/eth-lightwallet/dist/lightwallet.js"></script>
     <script src="node_modules/store/dist/store.legacy.min.js"></script>
     <script src="app.js"></script>

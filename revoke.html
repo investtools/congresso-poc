@@ -3,11 +3,25 @@
   <head>
     <script src="menu.js"></script>
 
-    <script src="app.js"></script>
+    <script>
+      window.onload = function() {
+        App.getKeyStore(function(ks){
+          selectElement = document.querySelector("#address")
+          console.log(ks.addresses.length)
+          for(i=0; i<ks.addresses.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = ks.addresses[i]
+            opt.innerHTML = ks.addresses[i]
+            selectElement.appendChild(opt)
+          }
+        })
+      };
+    </script>
 
     <link rel="import" href="menu.html" onload="handleLoad(event)" onerror="handleError(event)">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
       .container {
@@ -27,11 +41,8 @@
         <div class="col-md-10">
           <form>
             <div class="form-group">
-              <label for="lawProject">Projeto de Lei</label>
-              <select class="form-control" id="lawProject">
-                <option>d0943...(App Android)</option>
-                <option>d1124...(Macbook)</option>
-                <option>d8976...(Windows)</option>
+              <label for="keys">Chave</label>
+              <select class="form-control" id="address">
               </select>
             </div>
             <button type="button" class="btn btn-primary" onclick="App.revoke()">Revogar chave</button>
@@ -39,5 +50,12 @@
         </div>
       </div>
     </div>
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/toastr/build/toastr.min.js"></script>
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <script src="node_modules/eth-lightwallet/dist/lightwallet.js"></script>
+    <script src="node_modules/store/dist/store.legacy.min.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

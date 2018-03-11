@@ -1,4 +1,30 @@
 function App() {
+
+  this.server = function() {
+    return axios.create({
+      baseURL: 'http://localhost:3000/api/v1'
+    });
+  }
+
+  this.buildLawProjects = function() {
+    this.server().get('/law_projects')
+      .then(function (response) {
+        selectElement = document.querySelector("#lawProject")
+        for(i=0; i<=response.data.length; i++) {
+          console.log(response.data[i])
+          var opt = document.createElement('option');
+          opt.value = response.data[i].id;
+          opt.innerHTML = response.data[i].title;
+          selectElement.appendChild(opt)
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          toastr.error(error.response.data.msg[0])
+        }
+      });
+  }
+
   this.brazilianCitizen = function() {
     return window.document.querySelector("#brazilianCitizen").checked
   }
@@ -25,8 +51,15 @@ function App() {
     return window.document.querySelector("#comment").value
   }
 
+  this.address = function() {
+    return window.document.querySelector("#address").value
+  }
+
   this.vote = function() {
-    if (document.querySelector('input[name="vote"]:checked').value === "true")
+    if (document.querySelector('input[name="vote"]:checked') == null) {
+      return null
+    }
+    else if (document.querySelector('input[name="vote"]:checked').value === "true")
       return true
     else
       return false
@@ -64,33 +97,77 @@ function App() {
   }
   
   this.authorize = function() {
-    console.log("autorizando a chave....")
-    console.log(this.cpf())
-    this.getKeyStore(function(ks){
-      var address = ks.addresses[0]
-      var authorization = {cpf: this.cpf, address: address}
-      //Nesse momento vai rolar o POST para api de autorizacao
-    })
+
+    that = this
     
+    if ((this.cpf() == undefined || this.cpf().length == 0) || this.brazilianCitizen() == false)
+      toastr.error("Preencha todos os campos")
+    else {
+      this.getKeyStore(function(ks){
+        var address = ks.addresses[0]
+        var authorization = {cpf: that.cpf(), address: address}
+        
+        that.server().post('/authorizations', authorization)
+          .then(function (response) {
+            toastr.success('Chave autorizada com sucesso!')
+          })
+          .catch(function (error) {
+            if (error.response) {
+              toastr.error(error.response.data.msg[0])
+            }
+          });
+      })
+    }
   }
 
   this.sendVote = function() {
-    console.log("enviando o voto...")
-    var message = {lawProject: this.lawProject(), comment: this.comment(), vote: this.vote()}
 
-    this.getKeyStore(function(ks){
-      var address = ks.addresses[0]
-      ks.keyFromPassword("123456", function (err, pwDerivedKey) {
-        var signedMessage = lightwallet.signing.signMsg(ks, pwDerivedKey, JSON.stringify(message), address, ks.hdPathString)
-        console.log(signedMessage)
-        //Nesse momento devemos fazer o POST pra api de votos com o campo message + signedMessage
-      });
-    })
+    if (this.lawProject() == undefined || this.vote() == null)
+      toastr.error("Preencha todos os campos obrigatórios")
+    else {
+      var vote = {law_project_id: this.lawProject(), comment: this.comment(), vote_choice: this.vote()}
+
+      that = this
+
+      this.getKeyStore(function(ks){
+        var address = ks.addresses[0]
+        ks.keyFromPassword("123456", function (err, pwDerivedKey) {
+          var signedMessage = lightwallet.signing.signMsg(ks, pwDerivedKey, JSON.stringify(vote), address, ks.hdPathString)
+          console.log(signedMessage)
+
+          vote.address = address
+          vote.signed_message = JSON.stringify(signedMessage)
+
+          that.server().post('/votes', vote)
+            .then(function (response) {
+              toastr.success('Voto registrado com sucesso!')
+            })
+            .catch(function (error) {
+              if (error.response) {
+                toastr.error(error.response.data.msg[0])
+              }
+            });
+        });
+      })
+    }
   } 
 
   this.revoke = function() {
     console.log("Revogando a chave")
-    console.log(this.publicKey())
+
+    var authorization = {address: this.address()}
+
+    this.server().delete('/authorizations/'+this.address())
+      .then(function (response) {
+        store.remove('keyStore')
+        toastr.success('Chave revogada com sucesso!')
+      })
+      .catch(function (error) {
+        console.log(error)
+        if (error.response) {
+          toastr.error(error.response.data.msg[0])
+        }
+      });
   } 
 }
 
