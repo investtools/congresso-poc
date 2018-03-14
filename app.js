@@ -2,7 +2,7 @@ function App() {
 
   this.server = function() {
     return axios.create({
-      baseURL: 'http://localhost:3000/api/v1'
+      baseURL: 'http://localhost:3333/api/v1'
     });
   }
 
